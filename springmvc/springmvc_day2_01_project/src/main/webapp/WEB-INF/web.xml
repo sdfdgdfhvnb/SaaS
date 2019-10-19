@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xmlns="http://java.sun.com/xml/ns/javaee"
+		 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+	http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+		 version="2.5">
+
+	<!--第一个过滤器:配置字符集编码过滤器(CharacterEncodingFilter)-->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+
+		<!--指定使用的字符集编码（UTF-8）-->
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<!--配置所有请求都经过字符集编码过滤器处理-->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--第二个过滤器:配置http请求方法转换的过滤器-->
+	<filter>
+		<filter-name>hiddenHttpMethodFilter</filter-name>
+		<filter-class>org.springframework.web.filter.HiddenHttpMethodFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>hiddenHttpMethodFilter</filter-name>
+		<!--配置所有请求都经过http请求方法转换器-->
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<!--配置前端控制器:DispatcherServlet,用于统一接收前端发过来的请求-->
+	<servlet>
+		<servlet-name>springmvc-helloworld</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+
+		<!--加载springmvc主配置文件-->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springmvc.xml</param-value>
+		</init-param>
+
+		<!--配置什么时候加载前端控制器,说明:
+            1.配置大于等于0的整数,表示在tomcat服务器启动的时候就加载
+            2.配置小于0的整数,表示在第一次请求到达的时候加载
+        -->
+		<load-on-startup>1</load-on-startup>
+
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springmvc-helloworld</servlet-name>
+		<!--配置请求url规则,说明:
+            1. *.do表示以.do结尾的请求进入前端控制器
+            2. / 表示所有请求都进入前端控制器
+        -->
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+
+</web-app>

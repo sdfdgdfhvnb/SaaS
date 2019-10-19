@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="springmvc_day01_01_helloworld" />
+        <module name="springmvc_day2_01_project" />
+        <module name="springmvc_day01_02_param" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="springmvc_day01_01_helloworld" target="1.8" />
+      <module name="springmvc_day01_02_param" target="1.8" />
+      <module name="springmvc_day02_01_project" target="1.8" />
+      <module name="springmvc_day2_01_project" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
