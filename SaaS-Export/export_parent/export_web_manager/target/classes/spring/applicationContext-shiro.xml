@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--1.配置shiro的过滤器工厂,这里的bean的id匹配web.xml中的filter-name值-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+
+        <!--1.1 注入SecurityManager对象,安全管理器-->
+        <property name="securityManager" ref="securityManager"/>
+
+        <!--1.2 认证地址 (认证失败后,默认跳转到登录页面在这里配置)-->
+        <property name="loginUrl" value="/login.jsp"/>
+
+        <!--1.3 认证成功后默认跳转的地址 如果认证成功程序中有指定地址,以程序指定为主-->
+        <property name="successUrl" value="/index.jsp"/>
+
+        <!--1.4 授权校验失败,默认跳转到的地址-->
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+
+        <!--1.5 shiro过滤器配置-->
+        <property name="filterChainDefinitions">
+            <value>
+                <!--A. 配置放行的资源-->
+                /css/** = anon
+                /img/** = anon
+                /make/** = anon
+                /plugins/** = anon
+                /login.jsp = anon
+                /login* = anon
+                /index.jsp = anon
+                <!--权限校验-->
+                <!--/system/user/list.do = perms["角色管理"]-->
+
+                <!--B. 其他资源都需要认证-->
+                /** = authc
+            </value>
+        </property>
+
+    </bean>
+
+    <!--2.创建securityManager对象-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--注入自定义的realm-->
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <!--3.创建自定义的realm对象-->
+    <bean id="myRealm" class="com.itheima.web.shiro.AuthRealm">
+        <!--注入凭证匹配器,可以自动对用户输入的妈妈按照指定的算法进行加密-->
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+    </bean>
+
+    <!--4.创建凭证匹配器,指定加密算法
+    <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        自动对用户输入的密码按照md5算法进行加密
+        <property name="hashAlgorithmName" value="md5"/>
+    </bean>-->
+
+    <bean id="credentialsMatcher" class="com.itheima.web.shiro.CustomCredentialMatcher"/>
+
+</beans>
